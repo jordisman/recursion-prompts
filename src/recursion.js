@@ -8,7 +8,7 @@
 // factorial(5); // 120
 var factorial = function(n) {
   if (n < 0) {
-    return null
+    return null;
   }
   if (n <= 1) {
     return 1;
@@ -136,21 +136,22 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 // baxp       xp = n
-   // if (exp === 0) {
-  //   return 1;
-  // } else if (exp > 0 && exp % 2 === 0){
-  //   return 
-  // } else {
-  //   return
-  // }
+    // if(exp === 0) {
+    //     return 1;
+    // }
+    // if(exp < 0) {
+    //     return 1 / (Math.pow(base, Math.abs(exp))); //Make sure it's float AND abs
+    // }
+    // return base * Math.pow(base, exp-1);
+
 var exponent = function(base, exp) {
-    if(exp === 0) {
-        return 1;
-    }
-    if(exp < 0) {
-        return exponent(1 / (Math.pow(base, Math.abs(exp)))); //Make sure it's float AND abs
-    }
-    return base * Math.pow(base, exp-1);
+  if (exp === 0) {
+    return 1;
+  } else if (exp > 0 ) {   
+    return base * (exponent(base, exp - 1)); 
+  } else if (exp < 0) {
+    return 1 / (exponent(base, - exp));
+  }
 };
 
 // 8. Determine if a number is a power of two.
@@ -159,12 +160,12 @@ var exponent = function(base, exp) {
 // powerOfTwo(10); // false
 // power of two: 2,4,8,16,32,64,128
 var powerOfTwo = function(n) {
-  // if (n === 1) {
-  //   return true;
-  // } else if (n === 0 || n % 2 === 1){
-  //   return false;
-  // } else
-
+  if (n === 1) {
+    return true;
+  } else if (n === 0 || n % 2 === 1){
+    return false;
+  } 
+    return powerOfTwo(n / 2);
 };
 
 // 9. Write a function that reverses a string.
@@ -209,39 +210,68 @@ var palindrome = function(string) {
 
 // 11. Write a function that returns the remainder of x divided by y without using the
 // modulo (%) operator.
-// modulo(5,2) // 1
-// modulo(17,5) // 2
+// modulo(5,2) // 1 --> 5-2-2 = 1
+// modulo(17,5) // 2 --> 17-5-5-5 = 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+  if (y === 0) { return NaN; } 
+
+  if (x < 0 && y < 0) { 
+    if (x > y) { 
+    return x; 
+    } 
+  } else if ((x < 0 && y > 0) || (x > 0 && y < 0)) { 
+    
+    if (-x < y) { 
+      return x;   
+    } 
+    return modulo(x + y, y); 
+
+  } else {
+    if (x < y) { 
+      return x; 
+    }
+  }
+  return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
-/*
-  function multiply(num1, num2) {
-    var total = 0
-    var newNum1 = Math.abs(num1);
-    var newNum2 = Math.abs(num2)
-    for (i = 0; i < newNum2; i++) {
-      total = total + num1
-    }
-    if (num1 < 0 || num2 < 0) {
-      return -(total);
-    } else {
-      return total;
-    }
-  }
-*/
 
 var multiply = function(x, y) {
+  if (x === 0 || y === 0) {
+    return 0;
+  } else if (y < 0 ) {
+    return - x + multiply(x, y +1);
+  } else {
+    return x + multiply(x, y-1);
+  }
+  
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
-var divide = function(x, y) {
+var divide = function(x, y) { 
+  if (y === 0) {
+    return NaN;
+  }
+  if (x === 0) {
+    return 0;
+  }
+  if (x < 0 && y > 0 && -x < y || x < -y) {
+    return 0; 
+  } 
+  if (x > 0 && y > 0 && x < y) {    
+    return 0; 
+  }
+  if (x > 0 && y > 0) {
+    return 1 + divide(x - y, y);
+  } else {
+    return -1 + divide(x + y, y);
+  } 
 };
 
-// 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
+// 14. Find the grreatest common divisor (gcd) of two positive numbers. The GCD of two
 // integers is the greatest integer that divides both x and y with no remainder.
 // gcd(4,36); // 4
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
