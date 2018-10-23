@@ -37,7 +37,7 @@ var arraySum = function(array) {
   // get the flat array [1,2,3,4,5] -----
   array.forEach(function(elem) {
     if (Array.isArray(elem)) {
-      //newArr = newArr.concat(elem); //[1,2,3,[4]]     
+      //newArr = newArr.concat(elem); //[1,2,3,[4]]
       newArr = newArr.concat(arraySum(elem));
       // console.log(newArr);
     } else { //if elem is a num, just push
@@ -147,8 +147,8 @@ var range = function(x, y) {
 var exponent = function(base, exp) {
   if (exp === 0) {
     return 1;
-  } else if (exp > 0 ) {   
-    return base * (exponent(base, exp - 1)); 
+  } else if (exp > 0 ) {
+    return base * (exponent(base, exp - 1));
   } else if (exp < 0) {
     return 1 / (exponent(base, - exp));
   }
@@ -164,7 +164,7 @@ var powerOfTwo = function(n) {
     return true;
   } else if (n === 0 || n % 2 === 1){
     return false;
-  } 
+  }
     return powerOfTwo(n / 2);
 };
 
@@ -214,22 +214,22 @@ var palindrome = function(string) {
 // modulo(17,5) // 2 --> 17-5-5-5 = 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
-  if (y === 0) { return NaN; } 
+  if (y === 0) { return NaN; }
 
-  if (x < 0 && y < 0) { 
-    if (x > y) { 
-    return x; 
-    } 
-  } else if ((x < 0 && y > 0) || (x > 0 && y < 0)) { 
-    
-    if (-x < y) { 
-      return x;   
-    } 
-    return modulo(x + y, y); 
+  if (x < 0 && y < 0) {
+    if (x > y) {
+    return x;
+    }
+  } else if ((x < 0 && y > 0) || (x > 0 && y < 0)) {
+
+    if (-x < y) {
+      return x;
+    }
+    return modulo(x + y, y);
 
   } else {
-    if (x < y) { 
-      return x; 
+    if (x < y) {
+      return x;
     }
   }
   return modulo(x - y, y);
@@ -246,12 +246,11 @@ var multiply = function(x, y) {
   } else {
     return x + multiply(x, y-1);
   }
-  
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
-var divide = function(x, y) { 
+var divide = function(x, y) {
   if (y === 0) {
     return NaN;
   }
@@ -259,16 +258,16 @@ var divide = function(x, y) {
     return 0;
   }
   if (x < 0 && y > 0 && -x < y || x < -y) {
-    return 0; 
-  } 
-  if (x > 0 && y > 0 && x < y) {    
-    return 0; 
+    return 0;
+  }
+  if (x > 0 && y > 0 && x < y) {
+    return 0;
   }
   if (x > 0 && y > 0) {
     return 1 + divide(x - y, y);
   } else {
     return -1 + divide(x + y, y);
-  } 
+  }
 };
 
 // 14. Find the grreatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -284,25 +283,44 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+	if (str1.length === 0 && str2.length === 0) {
+		return true;
+	}
+	if (str1.charAt(0) !== str2.charAt(0)) {
+		return false;
+	}
+	return compareStr(str1.slice(1), str2.slice(1));
+
 };
 
-// 16. Write a function that accepts a string and creates an array where each letter occupies an index of the array.
+// 16. Write a function that accepts a string and creates an array where each letter
+// occupies an index of the array.
+//input: string //output: array
 var createArray = function(str) {
-  var arr = [];
-
-  arr = arr.push(str[0]);
-  return createArray(str.slice(1));
+	if (str.length === 0) {
+		return [];
+	}
+	return [str.charAt(0)].concat(createArray(str.slice(1)));
 };
 
 // 17. Reverse the order of an array
-var reverseArr = function(array) {
+var reverseArr = function(array) { //[1,2,3,4]
+	if (array.length === 0) {
+		return [];
+	}
+	return reverseArr(array.slice(1)).concat(array[0]); //[4,3,2,1]
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+	if (length === 0) {
+		return [];
+	}
+	return [value].concat(buildList(value, length - 1));
 };
+
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
 // For multiples of three, output 'Fizz' instead of the number.
