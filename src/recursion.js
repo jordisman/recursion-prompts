@@ -328,24 +328,71 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
+  var arr = [];
+    if (n === 0) {
+      return arr;
+    }
+    if (n % 3 === 0 && n % 5 === 0) {
+      arr.push('FizzBuzz');
+    } else if (n % 5 === 0) {
+      arr.push('Buzz');
+    } else if (n % 3 === 0) {
+      arr.push('Fizz');
+    } else {
+      arr.push(n.toString());
+    }
+  return fizzBuzz(n - 1).concat(arr);
 };
+
+fizzBuzz(15);
 
 // 20. Count the occurence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+  var count = 0;
+  if (array.length === 0) {
+    return count;
+  } else if (array[0] === value) {
+    count++;
+  }
+  return count + countOccurrence(array.slice(1), value);
 };
+
+countOccurrence([2,7,4,4,1,4], 4);
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  if (array.length === 0) {
+    return [];
+  }
+  return [callback(array[0])].concat(rMap(array.slice(1), callback));
 };
+var timesTwo = function(elem) {
+    return elem * 2;
+  }
+rMap([1,2,3], timesTwo);
+
 
 // 22. Write a function that counts the number of times a key occurs in an object.
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
-// countKeysInObj(obj, 'r') // 1
-// countKeysInObj(obj, 'e') // 2
+
 var countKeysInObj = function(obj, key) {
+  var count = 0;
+  for (var prop in obj) {
+    // this one NO NEED a base case coz it's inside a regular loop!!
+    // think about how a regular loop works
+    // if (!obj.hasOwnProperty(prop)) {return count;}
+
+    if (prop === key) {
+    count++;
+    }
+    if (typeof obj[prop] === 'object') {
+      count += countKeysInObj(obj[prop], key);
+    }
+  }
+    return count;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
@@ -353,6 +400,15 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var count = 0;
+  for (var key in obj) {
+    if (obj[key] === value) {
+      count++;
+    } else if (typeof obj[key] === 'object') {
+      count += countValuesInObj(obj[key], value);
+    }
+  }
+    return count;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
